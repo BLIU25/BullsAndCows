@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BullsAndCows
 {
@@ -18,7 +19,26 @@ namespace BullsAndCows
         {
             var countBulls = CountBulls(guess);
 
-            return $"{countBulls}A0B";
+            var countCows = CountCows(guess, countBulls);
+
+            return $"{countBulls}A{countCows}B";
+        }
+
+        private int CountCows(string guess, int countBulls)
+        {
+            var guessDigits = guess.Split(separator: " ");
+            var secretDigits = secret.Split(separator: " ");
+            int countCows = 0;
+            foreach (var secretDigit in secretDigits)
+            {
+                if (guessDigits.Contains(secretDigit))
+                {
+                    countCows++;
+                }
+            }
+
+            countCows -= countBulls;
+            return countCows;
         }
 
         private int CountBulls(string guess)
